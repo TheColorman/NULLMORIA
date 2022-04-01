@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour
   public Text dialogueText;
 
   public Animator animator;
+  public AudioSource audioSource;
 
   private Queue<string> sentences;
   private GameManager gameManager;
@@ -67,6 +68,7 @@ public class DialogueManager : MonoBehaviour
     foreach (char letter in sentence.ToCharArray())
     {
       dialogueText.text += letter;
+      audioSource.PlayOneShot(audioSource.clip);
       yield return null;
     }
   }
