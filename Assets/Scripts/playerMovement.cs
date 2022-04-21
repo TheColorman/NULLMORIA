@@ -61,7 +61,6 @@ public class PlayerMovement : MonoBehaviour
   // Update is called once per physics tick
   void FixedUpdate()
   { // Movement
-    Debug.Log(gameManager.inputEnabled);
     rb.MovePosition(rb.position + movement * moveSpeed * Time.fixedDeltaTime);
   }
 }
