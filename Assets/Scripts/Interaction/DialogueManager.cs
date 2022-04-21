@@ -31,8 +31,6 @@ public class DialogueManager : MonoBehaviour
 
   public void StartDialogue(Dialogue dialogue)
   {
-    Debug.Log("Starting dialogue with " + dialogue.title);
-
     animator.SetBool("IsOpen", true);
 
     gameManager.inputEnabled = false;

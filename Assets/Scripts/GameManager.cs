@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-  public bool inputEnabled = true;
+  public bool inputEnabled = false;
+  public Animator animator;
 
   public IEnumerator EnableInput()
   {
@@ -12,4 +13,8 @@ public class GameManager : MonoBehaviour
     inputEnabled = true;
   }
 
+  public void DisableInput()
+  {
+    inputEnabled = false;
+  }
 }

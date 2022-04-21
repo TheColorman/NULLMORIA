@@ -48,7 +48,6 @@ public class InteractablesHandler : MonoBehaviour
       }
       // Interact with closest interactable
       closest.Interact();
-      Debug.Log("interacting with ");
     }
   }
 
@@ -61,7 +60,6 @@ public class InteractablesHandler : MonoBehaviour
       {
         return;
       }
-      Debug.Log(gameManager.inputEnabled);
       Interact();
     }
   }
