@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
   public bool inputEnabled = false;
   public Animator animator;
+  public Dictionary<string, int> inventory = new Dictionary<string, int>();
 
   public IEnumerator EnableInput()
   {
