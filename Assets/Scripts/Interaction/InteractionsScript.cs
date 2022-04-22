@@ -39,7 +39,7 @@ public class InteractionsScript : MonoBehaviour
     if (dog)
     {
       // Play sounds at random intervals
-      if (Random.Range(0, 1000) < 1)
+      if (Random.Range(0, 10000) < 1)
       {
         if (dogAudioSource.isPlaying == false)
         {
