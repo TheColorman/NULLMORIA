@@ -11,13 +11,42 @@ public class InteractionsScript : MonoBehaviour
   public int itemID;
   [Header("Door")]
   public int keyID;
+  [Header("Dog")]
+  public bool dog = false;
+  // Sounds
+  public AudioClip[] dogSounds;
+  public AudioSource dogAudioSource;
 
   void Start()
   {
     gameManager = FindObjectOfType<GameManager>();
+    if (interactable == null)
+    {
+      interactable = GetComponent<Interactable>();
+    }
     if (keyID != 0)
     {
-      interactable.alternateCondition = alternateCondition;
+      interactable.alternateCondition = AlternateCondition;
+    }
+    if (dog)
+    {
+      interactable.alternateCondition = DogCondition;
+    }
+  }
+
+  void Update()
+  {
+    if (dog)
+    {
+      // Play sounds at random intervals
+      if (Random.Range(0, 1000) < 1)
+      {
+        if (dogAudioSource.isPlaying == false)
+        {
+          dogAudioSource.clip = dogSounds[Random.Range(0, dogSounds.Length)];
+          dogAudioSource.Play();
+        }
+      }
     }
   }
 
@@ -33,8 +62,17 @@ public class InteractionsScript : MonoBehaviour
     // Open the door
     Destroy(gameObject);
   }
-  bool alternateCondition()
+  bool AlternateCondition()
   {
-    return gameManager.inventory.ContainsKey(0);
+    return gameManager.inventory.ContainsKey(keyID);
+  }
+
+  public void EnableDog()
+  {
+    gameManager.dogEnabled = true;
+  }
+  public bool DogCondition()
+  {
+    return !gameManager.dogEnabled;
   }
 }

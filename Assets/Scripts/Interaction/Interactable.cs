@@ -18,8 +18,11 @@ public class Interactable : MonoBehaviour
   {
     // Interact with this interactable
     TriggerDialogue();
-    // Run the onInteract event
-    onInteract.Invoke();
+    // Run the onInteract event if condition is met
+    if (alternateCondition == null || alternateCondition())
+    {
+      onInteract.Invoke();
+    }
   }
 
   public void TriggerDialogue()
