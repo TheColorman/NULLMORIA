@@ -9,34 +9,14 @@ public class PlayerMovement : MonoBehaviour
   public Animator animator;
   Vector2 movement;
   private GameManager gameManager;
-  private Camera cam;
 
   void Start()
   {
     gameManager = FindObjectOfType<GameManager>();
-    cam = Camera.main;
   }
   // Update is called once per physics frame
   void Update()
   {
-    // Move camera if player gets close to edge of screen
-    if (transform.position.x < cam.ScreenToWorldPoint(new Vector3(0, 0, 0)).x)
-    {
-      cam.transform.position = new Vector3(transform.position.x, cam.transform.position.y, cam.transform.position.z);
-    }
-    if (transform.position.x > cam.ScreenToWorldPoint(new Vector3(Screen.width, 0, 0)).x)
-    {
-      cam.transform.position = new Vector3(transform.position.x, cam.transform.position.y, cam.transform.position.z);
-    }
-    if (transform.position.y < cam.ScreenToWorldPoint(new Vector3(0, 0, 0)).y)
-    {
-      cam.transform.position = new Vector3(cam.transform.position.x, transform.position.y, cam.transform.position.z);
-    }
-    if (transform.position.y > cam.ScreenToWorldPoint(new Vector3(0, Screen.height, 0)).y)
-    {
-      cam.transform.position = new Vector3(cam.transform.position.x, transform.position.y, cam.transform.position.z);
-    }
-
     // Input
     if (gameManager.inputEnabled == false)
     {

@@ -9,14 +9,21 @@ public class DogFollow : MonoBehaviour
   Rigidbody2D rb;
   Animator animator;
   GameManager gameManager;
+  public AudioClip[] dogSounds;
+  public AudioSource dogAudioSource;
+  Interactable interactable;
+
   // Start is called before the first frame update
   void Start()
   {
+    interactable = GetComponentInChildren<Interactable>();
     player = GameObject.FindGameObjectWithTag("Player");
     previousPlayerPositions.Add(player.transform.position);
     rb = GetComponent<Rigidbody2D>();
     animator = GetComponent<Animator>();
     gameManager = FindObjectOfType<GameManager>();
+    dogAudioSource = GetComponent<AudioSource>();
+    interactable.alternateCondition = DogCondition;
   }
 
   // Called once per physics frame
@@ -58,4 +65,23 @@ public class DogFollow : MonoBehaviour
     animator.SetFloat("Horizontal", difference.x);
     animator.SetFloat("Vertical", difference.y);
   }
+
+  public void Bark()
+  {
+    if (dogAudioSource.isPlaying == false)
+    {
+      dogAudioSource.clip = dogSounds[Random.Range(0, dogSounds.Length)];
+      dogAudioSource.Play();
+    }
+
+  }
+  public bool DogCondition()
+  {
+    return !gameManager.dogEnabled;
+  }
+  public void EnableDog()
+  {
+    gameManager.dogEnabled = true;
+  }
+
 }

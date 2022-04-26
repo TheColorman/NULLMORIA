@@ -14,6 +14,9 @@ public class Interactable : MonoBehaviour
   public Dialogue alternateDialogue;
 
   public UnityEvent onInteract;
+  public UnityEvent onInteractAlternate;
+  public UnityEvent[] onInteractChoices;
+  public UnityEvent onInteractEnd;
   public void Interact()
   {
     // Interact with this interactable
@@ -22,6 +25,9 @@ public class Interactable : MonoBehaviour
     if (alternateCondition == null || alternateCondition())
     {
       onInteract.Invoke();
+    } else
+    {
+      onInteractAlternate.Invoke();
     }
   }
 
@@ -29,11 +35,11 @@ public class Interactable : MonoBehaviour
   {
     if (alternateCondition != null && alternateCondition())
     {
-      FindObjectOfType<DialogueManager>().StartDialogue(alternateDialogue);
+      FindObjectOfType<DialogueManager>().StartDialogue(alternateDialogue, this);
     }
     else
     {
-      FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+      FindObjectOfType<DialogueManager>().StartDialogue(dialogue, this);
     }
   }
 }
