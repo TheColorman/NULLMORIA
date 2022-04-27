@@ -63,8 +63,9 @@ public class GameManager : MonoBehaviour
     StartCoroutine(DisableInput(1.0f));
     // Enable input after fade
     StartCoroutine(EnableInput(10f));
-    StartCoroutine(DelayFunction(10f, () => {
-      dialogueManager.StartDialogue(postEatMeatDialogue); 
+    StartCoroutine(DelayFunction(10f, () =>
+    {
+      dialogueManager.StartDialogue(postEatMeatDialogue);
     }));
   }
 
@@ -74,6 +75,11 @@ public class GameManager : MonoBehaviour
     canvasAnimator.SetTrigger("Fade");
     // Disable input
     StartCoroutine(DisableInput(1.0f));
+    // Teleport player to -9, -30
+    StartCoroutine(DelayFunction(5, () =>
+    {
+      FindObjectOfType<PlayerMovement>().transform.position = new Vector3(-8.5f, -29, -1);
+    }));
     // Enable input after fade
     StartCoroutine(EnableInput(10f));
   }
