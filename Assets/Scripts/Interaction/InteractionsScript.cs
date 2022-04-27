@@ -24,6 +24,10 @@ public class InteractionsScript : MonoBehaviour
     {
       interactable.alternateCondition = AlternateCondition;
     }
+    if (keyID == 2)
+    {
+      interactable.alternateCondition = () => gameManager.dogEnabled;
+    }
   }
 
   public void PickupItem()

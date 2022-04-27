@@ -84,4 +84,68 @@ public class DogFollow : MonoBehaviour
     gameManager.dogEnabled = true;
   }
 
+
+  // Animation for dog to open door
+  public void OpenDoor()
+  {
+    StartCoroutine(OpenDoorAnimation());
+  }
+  public IEnumerator OpenDoorAnimation()
+  {
+    // Move from current position
+    // Start: transform.position
+    // Step 1: 39.5, -1.5
+    // Step 2: 39.5, -3.5
+    // Step 3: 41.5, -3.5
+    // Step 4: 41.5, -2.5
+    float increment = 1.0f;
+
+    // Step 1
+    Vector2 start = transform.position;
+    Vector2 end = new Vector2(39.5f, -1.5f);
+    float time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+    // Step 2
+    start = end;
+    end = new Vector2(39.5f, -3.5f);
+    time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+    // Step 3
+    start = end;
+    end = new Vector2(41.5f, -3.5f);
+    time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+    // Step 4
+    start = end;
+    end = new Vector2(41.5f, -2.5f);
+    time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+
+    // Open the door
+    GameObject metalDoor = GameObject.FindGameObjectWithTag("MetalDoor");
+    if (metalDoor != null)
+    {
+      Destroy(metalDoor);
+    }
+  }
 }

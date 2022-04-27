@@ -52,11 +52,11 @@ public class DialogueManager : MonoBehaviour
       DisplayNextSentence();
     }
     // Next/previous choice if pressing W or S
-    if (Input.GetKeyDown(KeyCode.W) && gameManager.inputEnabled == false)
+    if (Input.GetKeyDown(KeyCode.W) && gameManager.inputEnabled == false && choiceActive)
     {
       NextChoice();
     }
-    if (Input.GetKeyDown(KeyCode.S) && gameManager.inputEnabled == false)
+    if (Input.GetKeyDown(KeyCode.S) && gameManager.inputEnabled == false && choiceActive)
     {
       PreviousChoice();
     }
