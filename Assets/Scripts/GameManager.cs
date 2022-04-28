@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
   public bool inputEnabled = false;
   public Animator animator;
   public Animator canvasAnimator;
+  public Animator nighttimeAnimator;
   public Dictionary<int, string> inventory = new Dictionary<int, string>();
   public bool dogEnabled = false;
   DialogueManager dialogueManager;
@@ -66,6 +67,10 @@ public class GameManager : MonoBehaviour
     StartCoroutine(DelayFunction(10f, () =>
     {
       dialogueManager.StartDialogue(postEatMeatDialogue);
+    }));
+    StartCoroutine(DelayFunction(5f, () =>
+    {
+      nighttimeAnimator.SetTrigger("Nighttime");
     }));
   }
 
