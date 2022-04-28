@@ -58,31 +58,31 @@ TextureImporter:
     second: wolf_walk_down_3
   - first:
       213: 1275215898485025144
-    second: wolf_vertical_18
+    second: wolf_walk_up_0
   - first:
       213: 8179067204041773679
-    second: wolf_vertical_19
+    second: wolf_walk_up_1
   - first:
       213: -3269583121963415879
-    second: wolf_vertical_20
+    second: wolf_walk_up_2
   - first:
       213: 6962036854498862520
-    second: wolf_vertical_21
+    second: wolf_walk_up_3
   - first:
       213: -4591222138414337179
-    second: wolf_vertical_22
+    second: Wolf_Idle2_Down_0
   - first:
       213: -5272364837899707886
-    second: wolf_vertical_23
+    second: Wolf_Idle2_Down_1
   - first:
       213: -8888159036827862936
-    second: wolf_vertical_24
+    second: Wolf_Idle2_Down_2
   - first:
       213: 6869349234274836095
-    second: wolf_vertical_25
+    second: Wolf_Idle2_Down_3
   - first:
       213: 1688010080742623948
-    second: wolf_vertical_26
+    second: Wolf_Idle2_Down_4
   - first:
       213: 8206063447572821596
     second: wolf_vertical_27
@@ -595,7 +595,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_18
+      name: wolf_walk_up_0
       rect:
         serializedVersion: 2
         x: 160
@@ -616,7 +616,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_19
+      name: wolf_walk_up_1
       rect:
         serializedVersion: 2
         x: 192
@@ -637,7 +637,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_20
+      name: wolf_walk_up_2
       rect:
         serializedVersion: 2
         x: 224
@@ -658,7 +658,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_21
+      name: wolf_walk_up_3
       rect:
         serializedVersion: 2
         x: 256
@@ -679,7 +679,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_22
+      name: Wolf_Idle2_Down_0
       rect:
         serializedVersion: 2
         x: 0
@@ -700,7 +700,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_23
+      name: Wolf_Idle2_Down_1
       rect:
         serializedVersion: 2
         x: 32
@@ -721,7 +721,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_24
+      name: Wolf_Idle2_Down_2
       rect:
         serializedVersion: 2
         x: 64
@@ -742,7 +742,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_25
+      name: Wolf_Idle2_Down_3
       rect:
         serializedVersion: 2
         x: 96
@@ -763,7 +763,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wolf_vertical_26
+      name: Wolf_Idle2_Down_4
       rect:
         serializedVersion: 2
         x: 128
