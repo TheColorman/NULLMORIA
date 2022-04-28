@@ -11,7 +11,7 @@ public class FoundFoodTrigger : MonoBehaviour
     manager = FindObjectOfType<GameManager>();
   }
 
-  void OnTriggerEnter(Collider other)
+  void OnTriggerEnter2D(Collider2D other)
   {
     if (other.tag == "Player")
     {

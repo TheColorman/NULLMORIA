@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
   public Dialogue eatMeatDialogue;
   public Dialogue postEatMeatDialogue;
   public Dialogue dontEatMeatDialogue;
+  public Dialogue dogFindFoodDialogue;
+  public Dialogue dogAwayDialogue;
+  public Dialogue dogReturnDialogue;
 
   void Start()
   {
@@ -91,9 +94,39 @@ public class GameManager : MonoBehaviour
 
   public void DogFindFood()
   {
-    if (!dogEnabled || !ateMeat)
+    if (!dogEnabled || ateMeat)
     {
       return;
     }
+
+    // Dog bark
+    DogFollow dog = FindObjectOfType<DogFollow>();
+    dog.Bark();
+    // Display dogFindFoodDialogue
+    dialogueManager.StartDialogue(dogFindFoodDialogue);
+  }
+  public void DogAway()
+  {
+
+    StartCoroutine(DelayFunction(0.1f, () => dialogueManager.StartDialogue(dogAwayDialogue)));
+  }
+  public void DogReturn()
+  {
+    DogFollow dog = FindObjectOfType<DogFollow>();
+    dog.Bark();
+    dog.ReturnFromForest();
+    StartCoroutine(DelayFunction(1f, () =>
+    {
+      dialogueManager.StartDialogue(dogReturnDialogue);
+    }));
+  }
+  public void FadeToBlackReal()
+  {
+    // Fade to black using canvas
+    canvasAnimator.SetTrigger("Fade");
+    // Disable input
+    StartCoroutine(DisableInput(1.0f));
+    // Enable input after fade
+    StartCoroutine(EnableInput(10f));
   }
 }

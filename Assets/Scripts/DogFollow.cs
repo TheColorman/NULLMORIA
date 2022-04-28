@@ -148,4 +148,49 @@ public class DogFollow : MonoBehaviour
       Destroy(metalDoor);
     }
   }
+  
+  public void GoIntoForest()
+  {
+    StartCoroutine(GoIntoForestAnimation());
+  }
+  public IEnumerator GoIntoForestAnimation()
+  {
+    // Move from current position
+    // Start: transform.position
+    // Step 1: 1.6, -40
+    float increment = 1.0f;
+
+    // Step 1
+    Vector2 start = transform.position;
+    Vector2 end = new Vector2(1.6f, -40f);
+    float time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+  }
+  public void ReturnFromForest()
+  {
+    StartCoroutine(ReturnFromForestAnimation());
+  }
+  public IEnumerator ReturnFromForestAnimation()
+  {
+    // Move from current position
+    // Start: transform.position
+    // Step 1: -2, -50
+    float increment = 1.0f;
+
+    // Step 1
+    Vector2 start = transform.position;
+    Vector2 end = new Vector2(-2f, -50f);
+    float time = 0.0f;
+    while (time < 1.0f)
+    {
+      time += increment * Time.deltaTime;
+      transform.position = Vector2.Lerp(start, end, time);
+      yield return null;
+    }
+  }
 }
