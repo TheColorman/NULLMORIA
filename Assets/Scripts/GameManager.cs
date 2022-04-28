@@ -88,4 +88,12 @@ public class GameManager : MonoBehaviour
     // Enable input after fade
     StartCoroutine(EnableInput(10f));
   }
+
+  public void DogFindFood()
+  {
+    if (!dogEnabled || !ateMeat)
+    {
+      return;
+    }
+  }
 }
