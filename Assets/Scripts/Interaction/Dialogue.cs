@@ -14,4 +14,11 @@ public class Dialogue
   [TextArea(2, 10)]
   public string[] choices;
   public UnityEvent onEnd;
+
+
+  public Dialogue(string[] lines, string title = null, UnityEvent onEnd = null)
+  {
+    this.title = title;
+    this.sentences = lines;
+  }
 }

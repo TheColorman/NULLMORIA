@@ -17,8 +17,11 @@ public class GameManager : MonoBehaviour
   public Dialogue postEatMeatDialogue;
   public Dialogue dontEatMeatDialogue;
   public Dialogue dogFindFoodDialogue;
+  private bool dogFoundFood = false;
   public Dialogue dogAwayDialogue;
   public Dialogue dogReturnDialogue;
+  public Interactable seeWolves;
+  private bool wolvesSeen = false;
 
   void Start()
   {
@@ -94,10 +97,15 @@ public class GameManager : MonoBehaviour
 
   public void DogFindFood()
   {
+    if (dogFoundFood)
+    {
+      return;
+    }
     if (!dogEnabled || ateMeat)
     {
       return;
     }
+    dogFoundFood = true;
 
     // Dog bark
     DogFollow dog = FindObjectOfType<DogFollow>();
@@ -128,5 +136,34 @@ public class GameManager : MonoBehaviour
     StartCoroutine(DisableInput(1.0f));
     // Enable input after fade
     StartCoroutine(EnableInput(10f));
+  }
+  public void StayBlack()
+  {
+    // Fade to black using canvas
+    canvasAnimator.SetTrigger("FadePerm");
+    // Disable input
+    StartCoroutine(DisableInput(1.0f));
+  }
+
+  public void SeeWolves()
+  {
+    if (wolvesSeen)
+    {
+      return;
+    }
+    wolvesSeen = true;
+    seeWolves.Interact();
+  }
+  public void EscapeWolves()
+  {
+    // Fade to black
+    StayBlack();
+    Debug.Log("Escape");
+  }
+  public void Fight()
+  {
+    // Fade to black
+    StayBlack();
+    Debug.Log("Fight");
   }
 }
