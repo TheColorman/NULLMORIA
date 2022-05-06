@@ -25,6 +25,12 @@ public class GameManager : MonoBehaviour
   private bool wolvesSeen = false;
   public Dialogue runAwayaDialogue;
   public Dialogue fightDialogue;
+  public Interactable leaveDogPrompt;
+  public Interactable raidHouse;
+  public PlayerMovement player;
+  public Dialogue enterHouseDialogue;
+  private bool townSeen = false;
+  public Dialogue runAwayaDialogueNoDog;
 
   void Start()
   {
@@ -147,10 +153,19 @@ public class GameManager : MonoBehaviour
     // Disable input
     StartCoroutine(DisableInput(1.0f));
     // Enable black screen after fade
-    StartCoroutine(DelayFunction(2f, () =>
+    StartCoroutine(DelayFunction(1f, () =>
     {
       blackScreen.SetActive(true);
     }));
+  }
+  public void UnStayBlack()
+  {
+    // Fade to black using canvas
+    canvasAnimator.SetTrigger("UnFadePerm");
+    // Disable input
+    StartCoroutine(EnableInput(3.0f));
+    blackScreen.SetActive(false);
+    // Enable black screen after fade
   }
 
   public void SeeWolves()
@@ -167,7 +182,7 @@ public class GameManager : MonoBehaviour
     // Fade to black
     StayBlack();
     // Show Dialogue
-    StartCoroutine(DelayFunction(5f, () =>
+    StartCoroutine(DelayFunction(3f, () =>
     {
       dialogueManager.StartDialogue(runAwayaDialogue);
     }));
@@ -177,7 +192,7 @@ public class GameManager : MonoBehaviour
     // Fade to black
     StayBlack();
     // Show Dialogue
-    StartCoroutine(DelayFunction(5f, () =>
+    StartCoroutine(DelayFunction(3f, () =>
     {
       dialogueManager.StartDialogue(fightDialogue);
     }));
@@ -186,5 +201,62 @@ public class GameManager : MonoBehaviour
   public void CloseGame()
   {
     Application.Quit();
+  }
+
+  public void LeaevDogPrompt()
+  {
+    if (!dogEnabled)
+    {
+      return;
+    }
+    leaveDogPrompt.Interact();
+  }
+  public void LeaveDog()
+  {
+    dogEnabled = false;
+  }
+  public void KeepDog()
+  {
+    // Do nothing
+  }
+
+  public void RaidHouse()
+  {
+    // Disable if already ate meat or if have dog
+    if (ateMeat || dogEnabled || townSeen)
+    {
+      return;
+    }
+    townSeen = true;
+    raidHouse.Interact();
+  }
+  public void EnterHouse()
+  {
+    player.EnterHouse();
+    // Darken screen
+
+    StartCoroutine(DelayFunction(2f, () =>
+    {
+      StayBlack();
+      StartCoroutine(DelayFunction(2f, () =>
+      {
+        //! Break glass sound effect
+        StartCoroutine(DelayFunction(1f, () =>
+        {
+          dialogueManager.StartDialogue(enterHouseDialogue);
+        }));
+      }));
+    }));
+  }
+
+  public void EscapeWolvesNoDog()
+  {
+    // Fade to black
+    StayBlack();
+    // Show Dialogue
+    StartCoroutine(DelayFunction(3f, () =>
+    {
+      dialogueManager.StartDialogue(runAwayaDialogueNoDog);
+    }));
   }
 }

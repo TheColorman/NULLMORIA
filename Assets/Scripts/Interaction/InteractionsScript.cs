@@ -11,6 +11,8 @@ public class InteractionsScript : MonoBehaviour
   public int itemID;
   [Header("Door")]
   public int keyID;
+  [Header("Wolves")]
+  public bool wolves = false;
   // Sounds
 
   void Start()
@@ -27,6 +29,10 @@ public class InteractionsScript : MonoBehaviour
     if (keyID == 2)
     {
       interactable.alternateCondition = () => gameManager.dogEnabled;
+    }
+    if (wolves)
+    {
+      interactable.alternateCondition = () => !gameManager.dogEnabled && !gameManager.ateMeat;
     }
   }
 
