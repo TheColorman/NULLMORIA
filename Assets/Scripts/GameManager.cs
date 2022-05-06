@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
   public bool dogEnabled = false;
   DialogueManager dialogueManager;
   public bool ateMeat = false;
+  public GameObject blackScreen;
   [Header("Dialogues")]
   public Dialogue eatMeatDialogue;
   public Dialogue postEatMeatDialogue;
@@ -22,6 +23,8 @@ public class GameManager : MonoBehaviour
   public Dialogue dogReturnDialogue;
   public Interactable seeWolves;
   private bool wolvesSeen = false;
+  public Dialogue runAwayaDialogue;
+  public Dialogue fightDialogue;
 
   void Start()
   {
@@ -143,6 +146,11 @@ public class GameManager : MonoBehaviour
     canvasAnimator.SetTrigger("FadePerm");
     // Disable input
     StartCoroutine(DisableInput(1.0f));
+    // Enable black screen after fade
+    StartCoroutine(DelayFunction(2f, () =>
+    {
+      blackScreen.SetActive(true);
+    }));
   }
 
   public void SeeWolves()
@@ -158,12 +166,25 @@ public class GameManager : MonoBehaviour
   {
     // Fade to black
     StayBlack();
-    Debug.Log("Escape");
+    // Show Dialogue
+    StartCoroutine(DelayFunction(5f, () =>
+    {
+      dialogueManager.StartDialogue(runAwayaDialogue);
+    }));
   }
   public void Fight()
   {
     // Fade to black
     StayBlack();
-    Debug.Log("Fight");
+    // Show Dialogue
+    StartCoroutine(DelayFunction(5f, () =>
+    {
+      dialogueManager.StartDialogue(fightDialogue);
+    }));
+  }
+
+  public void CloseGame()
+  {
+    Application.Quit();
   }
 }
