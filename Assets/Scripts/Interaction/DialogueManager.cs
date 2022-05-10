@@ -135,11 +135,13 @@ public class DialogueManager : MonoBehaviour
   IEnumerator TypeSentence(string sentence)
   {
     dialogueText.text = "";
+    yield return new WaitForSeconds(0.3f);
     foreach (char letter in sentence.ToCharArray())
     {
       dialogueText.text += letter;
-      audioSource.PlayOneShot(audioSource.clip);
-      yield return null;
+      // Random chance to play sound
+      audioSource.Play();
+      yield return new WaitForSeconds(0.03f);
     }
   }
 

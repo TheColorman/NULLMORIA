@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEditor;
-using System.Linq;
-using UnityEditor.Animations;
 
 public class Interactable : MonoBehaviour
 {

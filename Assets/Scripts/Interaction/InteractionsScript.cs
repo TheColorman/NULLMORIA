@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractionsScript : MonoBehaviour
@@ -13,6 +11,10 @@ public class InteractionsScript : MonoBehaviour
   public int keyID;
   [Header("Wolves")]
   public bool wolves = false;
+  [Header("House")]
+  public bool house = false;
+  [Header("Shelf")]
+  public bool shelf = false;
   // Sounds
 
   void Start()
@@ -33,6 +35,14 @@ public class InteractionsScript : MonoBehaviour
     if (wolves)
     {
       interactable.alternateCondition = () => !gameManager.dogEnabled && !gameManager.ateMeat;
+    }
+    if (house)
+    {
+      interactable.alternateCondition = () => gameManager.ateMeat;
+    }
+    if (shelf)
+    {
+      interactable.alternateCondition = () => gameManager.ateMeat;
     }
   }
 

@@ -12,6 +12,7 @@ public class DogFollow : MonoBehaviour
   public AudioClip[] dogSounds;
   public AudioSource dogAudioSource;
   Interactable interactable;
+  public int maxPreviousPositions = 40;
 
   // Start is called before the first frame update
   void Start()
@@ -38,8 +39,8 @@ public class DogFollow : MonoBehaviour
     {
       previousPlayerPositions.Add(player.transform.position);
     }
-    // Remove oldest position from list if has more than 100 entries
-    if (previousPlayerPositions.Count > 20)
+    // Remove oldest position from list if has more than maxPreviousPositions entries
+    if (previousPlayerPositions.Count > maxPreviousPositions)
     {
       previousPlayerPositions.RemoveAt(0);
       // Move towards first position in list
@@ -88,6 +89,7 @@ public class DogFollow : MonoBehaviour
   // Animation for dog to open door
   public void OpenDoor()
   {
+    Bark();
     StartCoroutine(OpenDoorAnimation());
   }
   public IEnumerator OpenDoorAnimation()
@@ -192,5 +194,32 @@ public class DogFollow : MonoBehaviour
       transform.position = Vector2.Lerp(start, end, time);
       yield return null;
     }
+  }
+
+  public void Turn()
+  {
+    //! Become evil here
+    animator.SetBool("Evil", true);
+  }
+  public void ChasePlayer()
+  {
+    StartCoroutine(CatchUpToPlayer());
+  }
+  public IEnumerator CatchUpToPlayer()
+  {
+    maxPreviousPositions = 100;
+    while (maxPreviousPositions > 2)
+    {
+      maxPreviousPositions--;
+      // Remove oldest from list until length equal to maxPreviousPositions
+      while (previousPlayerPositions.Count > maxPreviousPositions)
+      {
+        previousPlayerPositions.RemoveAt(0);
+      }
+
+      yield return new WaitForSeconds(0.1f);
+    }
+    gameManager.KilledByDog();
+    yield return null;
   }
 }

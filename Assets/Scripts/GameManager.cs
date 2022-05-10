@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+  public bool escaped = false;
   public bool inputEnabled = false;
   public Animator animator;
   public Animator canvasAnimator;
@@ -13,6 +14,11 @@ public class GameManager : MonoBehaviour
   DialogueManager dialogueManager;
   public bool ateMeat = false;
   public GameObject blackScreen;
+  public AudioClip growl;
+  public AudioSource windSource;
+  public AudioClip breakGlass;
+  public AudioClip wolfKill;
+  public AudioSource geigerSource;
   [Header("Dialogues")]
   public Dialogue eatMeatDialogue;
   public Dialogue postEatMeatDialogue;
@@ -23,6 +29,7 @@ public class GameManager : MonoBehaviour
   public Dialogue dogReturnDialogue;
   public Interactable seeWolves;
   private bool wolvesSeen = false;
+  public GameObject wolves;
   public Dialogue runAwayaDialogue;
   public Dialogue fightDialogue;
   public Interactable leaveDogPrompt;
@@ -31,6 +38,12 @@ public class GameManager : MonoBehaviour
   public Dialogue enterHouseDialogue;
   private bool townSeen = false;
   public Dialogue runAwayaDialogueNoDog;
+  public Dialogue dogBecomeEvilDialogue;
+  private bool dogEvil = false;
+  public Dialogue dogTurnDialogue;
+  public Dialogue killedByDogDialogue;
+  public Dialogue enterRadiationDialogue;
+  public Dialogue toBeContinuedDialogue;
 
   void Start()
   {
@@ -56,6 +69,9 @@ public class GameManager : MonoBehaviour
 
   public void EatMeat()
   {
+    // Hide wolves
+    wolves.SetActive(false);
+
     // Start coroutine
     StartCoroutine(StartDialogue(eatMeatDialogue));
     ateMeat = true;
@@ -85,12 +101,14 @@ public class GameManager : MonoBehaviour
     }));
     StartCoroutine(DelayFunction(5f, () =>
     {
-      nighttimeAnimator.SetTrigger("Nighttime");
+      nighttimeAnimator.SetBool("Nighttime", true);
     }));
   }
 
   public void Escape()
   {
+    escaped = true;
+
     // Fade to black using canvas
     canvasAnimator.SetTrigger("Fade");
     // Disable input
@@ -99,6 +117,15 @@ public class GameManager : MonoBehaviour
     StartCoroutine(DelayFunction(5, () =>
     {
       FindObjectOfType<PlayerMovement>().transform.position = new Vector3(-8.5f, -29, -1);
+      // Disable reverb
+      FindObjectOfType<AudioReverbFilter>().enabled = false;
+      // Turn up wind
+      windSource.volume = 0.8f;
+      // Enable geiger counter if nighttime
+      if (ateMeat)
+      {
+        geigerSource.Play();
+      }
     }));
     // Enable input after fade
     StartCoroutine(EnableInput(10f));
@@ -153,7 +180,7 @@ public class GameManager : MonoBehaviour
     // Disable input
     StartCoroutine(DisableInput(1.0f));
     // Enable black screen after fade
-    StartCoroutine(DelayFunction(1f, () =>
+    StartCoroutine(DelayFunction(2f, () =>
     {
       blackScreen.SetActive(true);
     }));
@@ -164,7 +191,8 @@ public class GameManager : MonoBehaviour
     canvasAnimator.SetTrigger("UnFadePerm");
     // Disable input
     StartCoroutine(EnableInput(3.0f));
-    blackScreen.SetActive(false);
+
+    StartCoroutine(DelayFunction(1f, () => blackScreen.SetActive(false)));
     // Enable black screen after fade
   }
 
@@ -184,6 +212,8 @@ public class GameManager : MonoBehaviour
     // Show Dialogue
     StartCoroutine(DelayFunction(3f, () =>
     {
+      // Play wolf kill sound
+      windSource.PlayOneShot(wolfKill);
       dialogueManager.StartDialogue(runAwayaDialogue);
     }));
   }
@@ -194,6 +224,8 @@ public class GameManager : MonoBehaviour
     // Show Dialogue
     StartCoroutine(DelayFunction(3f, () =>
     {
+      // Play wolf kill sound
+      windSource.PlayOneShot(wolfKill);
       dialogueManager.StartDialogue(fightDialogue);
     }));
   }
@@ -240,11 +272,58 @@ public class GameManager : MonoBehaviour
       StayBlack();
       StartCoroutine(DelayFunction(2f, () =>
       {
-        //! Break glass sound effect
+        // Break glass sound effect
+        windSource.PlayOneShot(breakGlass);
+
         StartCoroutine(DelayFunction(1f, () =>
         {
           dialogueManager.StartDialogue(enterHouseDialogue);
         }));
+      }));
+    }));
+  }
+
+  public void EscapeRadiation()
+  {
+    if (!ateMeat || dogEnabled || townSeen)
+    {
+      return;
+    }
+    townSeen = true;
+    raidHouse.Interact();
+  }
+  public void EnterRadiation()
+  {
+    player.EnterHouse();
+    // Darken screen
+
+    StartCoroutine(DelayFunction(2f, () =>
+    {
+      StayBlack();
+      StartCoroutine(DelayFunction(2f, () =>
+      {
+        // Break glass sound effect
+        windSource.PlayOneShot(breakGlass);
+
+        StartCoroutine(DelayFunction(1f, () =>
+        {
+          dialogueManager.StartDialogue(enterRadiationDialogue);
+        }));
+      }));
+    }));
+  }
+  public void WaitUntilDaytime()
+  {
+    StartCoroutine(DelayFunction(2f, () =>
+    {
+      nighttimeAnimator.SetBool("Nighttime", false);
+      UnStayBlack();
+      // Disable geiger
+      geigerSource.Stop();
+
+      StartCoroutine(DelayFunction(4f, () =>
+      {
+        dialogueManager.StartDialogue(toBeContinuedDialogue);
       }));
     }));
   }
@@ -257,6 +336,46 @@ public class GameManager : MonoBehaviour
     StartCoroutine(DelayFunction(3f, () =>
     {
       dialogueManager.StartDialogue(runAwayaDialogueNoDog);
+      // Play wolf sound
+      windSource.PlayOneShot(wolfKill);
+    }));
+  }
+
+  public void DogBecomesEvil()
+  {
+    if (dogEvil)
+    {
+      return;
+    }
+    if (!ateMeat || !dogEnabled)
+    {
+      return;
+    }
+    dogEvil = true;
+
+    // Dog bark
+    DogFollow dog = FindObjectOfType<DogFollow>();
+    dog.Bark();
+    // Display dogFindFoodDialogue
+    dialogueManager.StartDialogue(dogBecomeEvilDialogue);
+  }
+  public void DogTurns()
+  {
+    DogFollow dog = FindObjectOfType<DogFollow>();
+
+    // Play growl
+    dog.dogAudioSource.PlayOneShot(growl);
+
+    StartCoroutine(DelayFunction(0.1f, () => dialogueManager.StartDialogue(dogTurnDialogue)));
+  }
+  public void KilledByDog()
+  {
+    // Fade to black
+    StayBlack();
+    // Show Dialogue
+    StartCoroutine(DelayFunction(3f, () =>
+    {
+      dialogueManager.StartDialogue(killedByDogDialogue);
     }));
   }
 }

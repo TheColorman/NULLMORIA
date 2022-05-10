@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -10,11 +8,21 @@ public class Trigger : MonoBehaviour
 
   void OnTriggerEnter2D(Collider2D other)
   {
-    OnTriggerEnter.Invoke();
+    if (other.tag == "Player")
+    {
+      OnTriggerEnter.Invoke();
+    }
   }
 
   void OnTriggerExit2D(Collider2D other)
   {
-    OnTriggerExit.Invoke();
+    if (other.tag == "Player")
+    {
+      OnTriggerExit.Invoke();
+    }
+  }
+  public void DisableTrigger()
+  {
+    gameObject.SetActive(false);
   }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -9,10 +8,14 @@ public class PlayerMovement : MonoBehaviour
   public Animator animator;
   Vector2 movement;
   private GameManager gameManager;
+  public AudioClip[] footstepsConcrete;
+  public AudioClip[] footstepsForest;
+  private AudioSource audioSource;
 
   void Start()
   {
     gameManager = FindObjectOfType<GameManager>();
+    audioSource = GetComponent<AudioSource>();
   }
   // Update is called once per physics frame
   void Update()
@@ -36,6 +39,27 @@ public class PlayerMovement : MonoBehaviour
     animator.SetFloat("Horizontal", movement.x);
     animator.SetFloat("Vertical", movement.y);
     animator.SetFloat("Speed", movement.sqrMagnitude);
+
+    // Footsteps
+    if (movement != Vector2.zero)
+    {
+      // Check if audiosource is playing
+      if (audioSource.isPlaying == false)
+      {
+        // If in bunker
+        if (gameManager.escaped == false)
+        {
+          // Play random concrete footsteps
+          audioSource.clip = footstepsConcrete[Random.Range(0, footstepsConcrete.Length)];
+        }
+        else
+        {
+          // Play random forest footsteps
+          audioSource.clip = footstepsForest[Random.Range(0, footstepsForest.Length)];
+        }
+        audioSource.Play();
+      }
+    }
   }
 
   // Update is called once per physics tick
