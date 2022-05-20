@@ -30,7 +30,7 @@ public class InteractablesHandler : MonoBehaviour
     }
   }
 
-  // When play presses interact
+  // When player presses interact
   public void Interact()
   {
     // If there is an interactable in the list
